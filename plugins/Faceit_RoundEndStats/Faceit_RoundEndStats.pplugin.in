@@ -1,0 +1,24 @@
+{
+	"$schema": "https://raw.githubusercontent.com/untrustedmodders/plugify/refs/heads/main/schemas/plugin.schema.json",
+	"version": "${FACEIT_ROUNDENDSTATS_VERSION}",
+	"name": "Faceit_RoundEndStats",
+	"description": "Per-round damage statistics, ported from the Metamod plugin cs2-faceit_roundendstats (ABKAM). Tracks damage and hits between every pair of players from player_hurt/player_death and prints one chat line per pair at round_end ('To: [dmg / hits] From: [dmg / hits] - name (N hp)'), using the DamageStats phrase of addons/translations/faceit_roundendstats.phrases.txt. Tables reset on round_start. No exported methods.",
+	"author": "ABKAM, ported to Plugify",
+	"website": "https://github.com/untrustedmodders/plugify",
+	"license": "GPL-3.0",
+	"entry": "bin/Faceit_RoundEndStats",
+	"platforms": [],
+	"language": "cpp",
+	"dependencies": [
+		{
+			"name": "s2sdk",
+			"constraints": ">=2.18.2"
+		},
+		{
+			"name": "hudmenu",
+			"constraints": ">=1.0.0",
+			"optional": true
+		}
+	],
+	"methods": []
+}
