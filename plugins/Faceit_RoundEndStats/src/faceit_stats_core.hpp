@@ -46,6 +46,11 @@ public:
 	// OnPlayerDeath of the original: one kill for the attacker, the victim's health becomes 0.
 	void AddKill(int attacker, int victim);
 
+	// Forgets everything recorded for one slot, in both directions. The tables are keyed by slot,
+	// so this is what a disconnect does: otherwise the next occupant of the slot inherits the damage
+	// lines of the player who left mid-round.
+	void ResetSlot(int slot);
+
 	int Health(int victim) const;
 	bool HasInteractions(int slot) const;
 	// Union of dealtTo and receivedFrom keys, ascending - the original iterated a std::map<int,bool>.

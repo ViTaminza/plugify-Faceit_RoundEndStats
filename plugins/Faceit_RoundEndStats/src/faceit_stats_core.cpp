@@ -34,6 +34,19 @@ void StatsTable::AddKill(int attacker, int victim) {
 	m_health[victim] = 0;
 }
 
+void StatsTable::ResetSlot(int slot) {
+	if (slot < 0 || slot > kMaxPlayers) {
+		return;
+	}
+	m_stats[slot].Reset();
+	m_health[slot] = 100;
+	// The other side of every pair is recorded in the other player's map as well.
+	for (SlotStats& stats : m_stats) {
+		stats.dealtTo.erase(slot);
+		stats.receivedFrom.erase(slot);
+	}
+}
+
 int StatsTable::Health(int victim) const {
 	if (victim < 0 || victim > kMaxPlayers) {
 		return 100;

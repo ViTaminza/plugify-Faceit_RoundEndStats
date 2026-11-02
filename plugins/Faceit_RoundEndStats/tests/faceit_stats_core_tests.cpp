@@ -87,6 +87,25 @@ void TestHealthAfterReset() {
 	Check(table.Health(2) == 0 && table.DealtTo(1).at(2).kills == 1, "kills are counted again after a reset");
 }
 
+void TestSlotReset() {
+	faceit::StatsTable table;
+	table.AddDamage(1, 2, 30, 70);
+	table.AddDamage(2, 3, 10, 90);
+	table.AddKill(4, 1);
+	table.AddKill(1, 5);
+
+	// Slot 2 leaves mid-round and the slot is reused before round_end.
+	table.ResetSlot(2);
+	Check(table.DealtTo(1).count(2) == 0, "the leaving player's damage dealt is dropped");
+	Check(table.ReceivedFrom(1).count(2) == 0, "the damage received from the leaving player is dropped");
+	Check(!table.HasInteractions(2), "the leaving player's own table is cleared");
+	Check(table.Health(2) == 100, "the leaving player's health is reset");
+	Check(table.InteractedWith(3).empty(), "the other side of the pair loses the reference too");
+	Check(table.DealtTo(1).at(5).kills == 1, "unrelated pairs stay");
+	Check(table.DealtTo(4).at(1).kills == 1, "the killer of the leaving player keeps his kill");
+	Check(table.Health(1) == 0, "unrelated health is untouched");
+}
+
 } // namespace
 
 int main() {
@@ -94,6 +113,7 @@ int main() {
 	TestKillsAndSelfDamage();
 	TestInteractionsAndReset();
 	TestHealthAfterReset();
+	TestSlotReset();
 	std::printf("%d checks, %d failures\n", g_checks, g_failures);
 	return g_failures == 0 ? 0 : 1;
 }
